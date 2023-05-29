@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  test_python3.7:
+    image: python:3.7
+    entrypoint: >
+      sh -c "cd /home && pip install -r ./requirements/dev.txt && pytest"
+    volumes:
+      - .:/home/
+  test_python3.8:
+    image: python:3.8
+    entrypoint: >
+      sh -c "cd /home && pip install -r ./requirements/dev.txt && pytest"
+    volumes:
+      - .:/home/
+  test_python3.9:
+    image: python:3.9
+    entrypoint: >
+      sh -c "cd /home && pip install -r ./requirements/dev.txt && pytest"
+    volumes:
+      - .:/home/
+  test_python3.10:
+    image: python:3.10
+    entrypoint: >
+      sh -c "cd /home && pip install -r ./requirements/dev.txt && pytest"
+    volumes:
+      - .:/home/
+  test_python3.11:
+    image: python:3.11
+    entrypoint: >
+      sh -c "cd /home && pip install -r ./requirements/dev.txt && pytest"
+    volumes:
+      - .:/home/

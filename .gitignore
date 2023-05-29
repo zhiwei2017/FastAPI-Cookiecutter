@@ -1,6 +1,8 @@
 .*
 !.gitignore
 !.gitlab-ci.yml
+!.github
+!.coveragerc
 venv/
 !.keep
 *pycache*

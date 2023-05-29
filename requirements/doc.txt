@@ -1,0 +1,5 @@
+-r base.txt
+sphinx~=6.2
+sphinx_rtd_theme~=1.2
+m2r2~=0.3
+sphinx-markdown-tables==0.0.17

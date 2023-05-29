@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "FastAPI Cookiecutter"
+version = "0.1.0"
+description = "This projects consist of a cookiecutter template that generates a full structure for a creating a PyPi standard package."
+authors = ["Zhiwei Zhang <zhiwei2017@gmail.com>"]
+readme = "README.rst"
+license = "MIT"
+repository = "https://github.com/zhiwei2017/fastapi-cookiecutter"
+documentation = "https://zhiwei2017.github.io/fastapi-cookiecutter/"
+keywords = ['cookiecutter template', 'python37', 'python38', 'python39', 'python310', 'python311', 'github-actions', 'gitlab-ci', 'bitbucket-pipelines', "fastapi", "RESTful API"]
+packages = [
+  {include = "fastapi_cookiecutter"}
+]
+
+include = [
+  '{{cookiecutter.project_slug}}/**/*',
+  'cookiecutter.json',
+  'hooks/*',
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+cookiecutter = "~2.1"
+
+[tool.poetry.dev-dependencies]
+bandit = "~1.7"
+flake8 = "~6.0"
+mypy = "~1.2"
+pytest = "~7.3"
+pytest-cookies = "~0.7"
+pytest-instafail = "~0.5"
+pyyaml = "~6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+fastapi_cookiecutter = 'fastapi_cookiecutter.main:main'

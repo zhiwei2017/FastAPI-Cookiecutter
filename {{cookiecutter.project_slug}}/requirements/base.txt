@@ -1,0 +1,15 @@
+fastapi~=0.95
+{% if cookiecutter.use_database == "Yes" -%}
+psycopg2~=2.9
+SQLAlchemy~=2.0
+alembic~=1.10
+{% endif -%}
+pydantic~=1.10
+python-jose~=3.3
+requests~=2.30
+uvicorn~=0.22
+{% if cookiecutter.use_oauth == "Yes" -%}
+passlib~=1.7
+python-multipart==0.0.6
+bcrypt~=4.0
+{% endif -%}

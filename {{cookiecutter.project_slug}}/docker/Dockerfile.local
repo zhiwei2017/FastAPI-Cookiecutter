@@ -1,0 +1,16 @@
+FROM tiangolo/uvicorn-gunicorn:python{{cookiecutter.python_version}}
+
+{% if cookiecutter.use_database == "Yes" -%}
+ARG DB_CONNECTION
+{% endif -%}
+ARG MODE
+
+{% if cookiecutter.use_database == "Yes" -%}
+ENV SQLALCHEMY_DATABASE_URI=${DB_CONNECTION}
+{% endif -%}
+ENV MODE=${MODE}
+
+COPY ./requirements/base.txt .
+RUN pip install -r base.txt
+
+WORKDIR /app
