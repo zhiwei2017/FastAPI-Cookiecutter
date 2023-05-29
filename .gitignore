@@ -1,0 +1,7 @@
+.*
+!.gitignore
+!.gitlab-ci.yml
+venv/
+!.keep
+*pycache*
+docs/build/
