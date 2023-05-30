@@ -1,0 +1,132 @@
+# This is a sample build configuration for Python.
+# Check our guides at https://confluence.atlassian.com/x/x4UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+options:
+  docker: true
+
+image: python:{{cookiecutter.python_version}}
+
+definitions:
+  {% if cookiecutter.use_database == "Yes" -%}
+  services:
+    postgres:
+      image: postgres
+      variables:
+        POSTGRES_PASSWORD: "mysecretpassword"
+  {% endif -%}
+  steps:
+    - step: &define-env-vars
+        name: Define global environment variables
+        script:
+          - DOCKER_REGISTRY="{{ cookiecutter.docker_registry }}"
+          - APP_NAME="{{cookiecutter.project_slug}}"
+          - echo "export DOCKER_REGISTRY=$DOCKER_REGISTRY" >> set_env.sh
+          - echo "export APP_NAME=$APP_NAME" >> set_env.sh
+        artifacts: # define the artifacts to be passed to each future step
+          - set_env.sh
+    - step: &test-build-env-vars
+        name: Define environment variables for testing docker image building
+        script:
+          - MODE="TEST"
+          - FLAG_PUSH="false"
+          - echo "export MODE=$MODE" >> set_env.sh
+          - echo "export FLAG_PUSH=$FLAG_PUSH" >> set_env.sh
+        artifacts: # define the artifacts to be passed to each future step
+          - set_env.sh
+    - step: &build-push-env-vars
+        name: Define environment variables for testing docker image building
+        script:
+          - MODE="PROD"
+          - FLAG_PUSH="true"
+          - echo "export MODE=$MODE" >> set_env.sh
+          - echo "export FLAG_PUSH=$FLAG_PUSH" >> set_env.sh
+        artifacts: # define the artifacts to be passed to each future step
+          - set_env.sh
+    - step: &flake8-check
+        name: Lint code with flake8
+        caches:
+          - pip
+        script:
+          - make flake8
+    - step: &mypy-check
+        name: Lint code with mypy
+        caches:
+          - pip
+        script:
+          - make mypy
+    - step: &bandit-check
+        name: Lint code with bandit
+        caches:
+          - pip
+        script:
+          - make bandit
+    - step: &test-step
+        name: Test with pytest
+        caches:
+          - pip
+        script:
+          {% if cookiecutter.use_database == "Yes" -%}
+          - export SQLALCHEMY_DATABASE_URI="postgresql://postgres:mysecretpassword@127.0.0.1:5432/postgres"
+          {% endif -%}
+          - make test
+        {% if cookiecutter.use_database == "Yes" -%}
+        services:
+          - postgres
+        {%- endif %}
+    - step: &build-step
+        name: Build docker image
+        script:
+          - source set_env.sh
+          - export DOCKER_IMG_NAME=${DOCKER_REGISTRY}/${APP_NAME}
+          - export COMMIT_TAG=${DOCKER_IMG_NAME}:${BITBUCKET_COMMIT::7}
+          - export LATEST_TAG=${DOCKER_IMG_NAME}:latest
+          - echo "Building and pushing tag $COMMIT_TAG and $LATEST_TAG"
+          - docker build
+            -t ${COMMIT_TAG}
+            -t ${LATEST_TAG}{% if cookiecutter.use_database == "Yes"  %}
+            --build-arg DB_CONNECTION="${DB_CONNECTION}"{% endif %}
+            --build-arg MODE="${MODE}"
+            -f ./docker/Dockerfile .  #TODO: you can pass build args here
+          - |
+            if [ "${FLAG_PUSH}" = "true" ]; then  # value of FLAG_PUSH can be either "true" or "false"
+              docker push $COMMIT_TAG
+              docker push $LATEST_TAG
+            fi
+          - |
+            echo "Cleaning docker images of $APP_NAME"
+            if docker images -a | grep "$APP_NAME" ; then
+              docker images -a | grep "$APP_NAME" | awk '{print $3}' | xargs docker rmi -f
+            else
+              echo "Nothing to clean"
+            fi
+        services:
+          - docker
+
+pipelines:
+  pull-requests:
+    "**":
+      - parallel:
+          - step: *flake8-check
+          - step: *mypy-check
+          - step: *bandit-check
+      - step: *test-step
+      - step: *define-env-vars
+      - step: *test-build-env-vars
+      - step: *build-step
+  branches:
+    "{develop}":
+      - parallel:
+          - step: *flake8-check
+          - step: *mypy-check
+          - step: *bandit-check
+      - step: *test-step
+      - step: *define-env-vars
+      - step: *test-build-env-vars
+      - step: *build-step
+  tags:
+    "v*":   # release tag
+      - step: *define-env-vars
+      - step: *build-push-env-vars
+      - step: *build-step
