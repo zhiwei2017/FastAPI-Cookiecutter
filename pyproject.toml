@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "FastAPI Cookiecutter"
+name = "FastAPI-Cookiecutter"
 version = "0.1.0"
 description = "This projects consist of a cookiecutter template that generates a full structure for a creating a PyPi standard package."
 authors = ["Zhiwei Zhang <zhiwei2017@gmail.com>"]
