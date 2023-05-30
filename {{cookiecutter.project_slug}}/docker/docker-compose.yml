@@ -1,0 +1,70 @@
+version: '3.4'
+services:
+  test_{{cookiecutter.project_slug}}:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.local
+      args:
+        {% if cookiecutter.use_database == "Yes" -%}
+        DB_CONNECTION: "postgresql://postgres:mysecretpassword@db:5432/postgres"
+        {% endif -%}
+        MODE: "TEST"
+    entrypoint: >
+      sh -c "sleep 5 && make test"
+    volumes:
+      - ../:/app/
+    environment:
+      - PYTHONPATH=/app/{{cookiecutter.project_slug}}
+    {% if cookiecutter.use_database == "Yes" -%}
+    links:
+      - "db:db"
+    depends_on:
+      - db
+    {%- endif %}
+  {% if cookiecutter.use_database == "Yes" -%}
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "mysecretpassword"
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    {% if cookiecutter.use_oauth == "Yes" -%}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    {%- endif %}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  {% endif -%}
+  {{cookiecutter.project_slug}}:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.local
+      args:
+        {% if cookiecutter.use_database == "Yes" -%}
+        DB_CONNECTION: "postgresql://postgres:mysecretpassword@db:5432/postgres"
+        {% endif -%}
+        MODE: "TEST"
+    entrypoint: >
+      sh -c "sleep 5 && python ./{{cookiecutter.project_slug}}/main.py"
+    volumes:
+      - ../:/app/
+    environment:
+      - PYTHONPATH=/app/{{cookiecutter.project_slug}}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/version"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    {%- if cookiecutter.use_database == "Yes" %}
+    links:
+      - "db:db"
+    depends_on:
+      - db
+    {%- endif %}

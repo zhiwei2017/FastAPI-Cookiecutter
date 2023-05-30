@@ -1,0 +1,124 @@
+# TODO: here define your own stages
+stages:
+  - linting
+  - test
+  - build
+
+image: python:{{cookiecutter.python_version}}
+
+variables:
+  DOCKER_REGISTRY: {{cookiecutter.docker_registry}}
+  APP_NAME: {{cookiecutter.project_slug}}
+
+############ START SHARED SCRIPTS ############
+.linting: &linting
+  stage: linting
+  script:
+    - make ${LINTING_PKG}
+
+.test: &test
+  stage: test
+  script:
+    - make test
+  {% if cookiecutter.use_database == "Yes" -%}
+  services:
+    - postgres:latest
+  {% endif -%}
+  variables:
+    {% if cookiecutter.use_database == "Yes" -%}
+    SQLALCHEMY_DATABASE_URI: "postgresql://postgres:mysecretpassword@postgres:5432/postgres"
+    POSTGRES_PASSWORD: "mysecretpassword"
+    {%- endif %}
+    MODE: "TEST"
+
+.build-img: &build-img
+  image: docker:20.10.16
+  stage: build
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - export COMMIT_TAG=${DOCKER_IMG_NAME}:${CI_COMMIT_SHORT_SHA}
+    - export LATEST_TAG=${DOCKER_IMG_NAME}:latest
+    - mkdir -p $HOME/.docker
+    - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
+  script:
+    - echo "Building and pushing tag $COMMIT_TAG and latest"
+    - docker build
+      -t ${COMMIT_TAG}
+      -t ${LATEST_TAG}{% if cookiecutter.use_database == "Yes"  %}
+      --build-arg DB_CONNECTION="${DB_CONNECTION}"{% endif %}
+      --build-arg MODE="${MODE}"
+      -f ./docker/Dockerfile .  #TODO: you can pass build args here
+    - |
+      if [ "${FLAG_PUSH}" = "true" ]; then  # value of FLAG_PUSH can be either "true" or "false"
+        docker push $COMMIT_TAG
+        docker push $LATEST_TAG
+      fi
+  after_script:
+    - |
+      echo "Cleaning docker images of $APP_NAME"
+      if docker images -a | grep "$APP_NAME" ; then
+        docker images -a | grep "$APP_NAME" | awk '{print $3}' | xargs docker rmi -f
+      else
+        echo "Nothing to clean"
+      fi
+############ END SHARED SCRIPTS ############
+
+############ START LINTING STAGE #############
+linting:flake8:
+  <<: *linting
+  variables:
+    LINTING_PKG: flake8
+  only:
+    - develop
+    - merge_requests
+
+linting:mypy:
+  <<: *linting
+  variables:
+    LINTING_PKG: mypy
+  only:
+    - develop
+    - merge_requests
+
+linting:bandit:
+  <<: *linting
+  variables:
+    LINTING_PKG: bandit
+  only:
+    - develop
+    - merge_requests
+############ END LINTING STAGE #############
+
+############## START TEST STAGE ##############
+test:
+  <<: *test
+  only:
+    - develop
+    - merge_requests
+############## END TEST STAGE ##############
+
+############# START BUILD STAGE ##############
+build:test:
+  <<: *build-img
+  variables:
+    MODE: "TEST"{% if cookiecutter.use_database == "Yes"  %}
+    DB_CONNECTION: ${DB_CONNECTION}{% endif %}
+    DOCKER_IMG_NAME: "${DOCKER_REGISTRY}/${APP_NAME}"
+    FLAG_PUSH: "false"
+  only:
+    - develop
+    - merge_requests
+
+build:push:
+  <<: *build-img
+  variables:
+    MODE: "PROD"{% if cookiecutter.use_database == "Yes"  %}
+    DB_CONNECTION: ${DB_CONNECTION}{% endif %}
+    DOCKER_IMG_NAME: "${DOCKER_REGISTRY}/${APP_NAME}"
+    FLAG_PUSH: "true"
+  only:
+    - /^v[0-9]+\.[0-9]+\.[0-9]+$/
+############# END BUILD STAGE ##############

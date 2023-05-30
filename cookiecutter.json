@@ -1,0 +1,39 @@
+{
+    "project_name": "My Awesome Project",
+    "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+    "project_url": "https://github.com/example_project",
+    "author": "John Doe",
+    "email": "{{ cookiecutter.author.lower()|replace(' ', '.') }}@example.com",
+    "short_description": "Behold My Awesome Project!",
+    "version": "0.1.0",
+    "license": [
+        "MIT",
+        "APACHE",
+        "2-Clause BSD",
+        "3-Clause BSD",
+        "GPL",
+        "None"
+    ],
+    "use_oauth": [
+        "No",
+        "Yes"
+    ],
+    "use_database": [
+        "Yes",
+        "No"
+    ],
+    "docker_registry": "docker.io",
+    "ci_tool": [
+        "GitHub",
+        "GitLab",
+        "Bitbucket",
+        "None"
+    ],
+    "python_version": [
+        "3.10",
+        "3.11",
+        "3.9",
+        "3.8",
+        "3.7"
+    ]
+}
