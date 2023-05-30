@@ -89,7 +89,7 @@ You'll be prompted for some values. Provide them, then a FastAPI project will be
 
 **Warning**: After this point, change 'My Awesome Project', 'John Doe', etc to your own information.
 
-Answer the prompts with your own desired :ref:`Project Generation Options`. For example::
+Answer the prompts with your own desired `Project Generation Options <./docs/source/02_prompts.rst>`_. For example::
 
     Cloning into 'fastapi-cookiecutter'...
     remote: Enumerating objects: 219, done.
