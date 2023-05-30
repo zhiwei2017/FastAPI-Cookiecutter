@@ -1,0 +1,56 @@
+name: github pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "{{ cookiecutter.python_version }}"
+
+      - name: Upgrade pip
+        run: |
+          # install pip=>20.1 to use "pip cache dir"
+          python3 -m pip install --upgrade pip
+
+      - name: Get pip cache dir
+        id: pip-cache
+        run: echo "::set-output name=dir::$(pip cache dir)"
+{% raw %}
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+{% endraw %}
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -e .
+          python3 -m pip install -r ./requirements/doc.txt
+
+      - name: Build sphinx docs
+        run: |
+          cd docs
+          make html
+        {% if cookiecutter.use_database == "Yes" -%}
+        env:
+          SQLALCHEMY_DATABASE_URI: "postgresql://dummy:dummy@localhost:5432/postgres"
+        {%- endif %}
+{% raw %}
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html
+{% endraw %}
