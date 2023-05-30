@@ -31,9 +31,7 @@ Configuration
      - Yes
    * - build
      - Build docker images and push them to docker registry.
-     -
-        * Add build args if needed.
-        * Change the value of stage variable *FLAG_PUSH* to *"true"*, if uploading is needed.
+     - Docker login credentials.
      - Yes
 
 CI/CD Variables
@@ -50,6 +48,15 @@ To make sure that the CI/CD pipeline runs successfully, there are some CI/CD var
    {% if cookiecutter.use_database == "Yes" -%}
    * - DB_CONNECTION
      - Postgres DB URI for building docker image.
+   {%- endif %}
+   {% if cookiecutter.ci_tool == 'GitHub' -%}
+   * - DOCKER_REGISTRY_USERNAME
+     - Username of docker registry to login.
+   * - DOCKER_REGISTRY_TOKEN
+     - Token of docker registry to login.
+   {% elif cookiecutter.ci_tool == 'GitLab' -%}
+   * - DOCKER_AUTH_CONFIG
+     - Docker authentication configuration.
    {%- endif %}
 
 Makefile
@@ -74,13 +81,6 @@ Makefile
      - Install and run `flake8`_ linting.
    * - test
      - Run tests and generate coverage report.
-
-How to Install
-++++++++++++++
-
-To install the requisite dependencies listed in `requirements/base.txt` for running the service, you can do::
-
-    $ pip install -r requirements/base.txt
 
 How to Use
 ++++++++++
@@ -150,4 +150,3 @@ Maintainers
 .. _mypy: https://github.com/python/mypy
 .. _flake8: https://gitlab.com/pycqa/flake8
 .. _pytest: https://docs.pytest.org/en/stable/
-.. _vegeta: https://github.com/tsenart/vegeta
