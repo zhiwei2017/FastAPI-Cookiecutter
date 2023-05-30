@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developer Guide &mdash; FastAPI Cookiecutter Template 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Core Team" href="06_core_team.html" />
+    <link rel="prev" title="User Guide" href="03_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FastAPI Cookiecutter Template
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_about.html">FastAPI Cookiecutter Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_prompts.html">Project Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_usage.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project-structure">Project structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gunicorn-configuration"><code class="docutils literal notranslate"><span class="pre">Gunicorn</span></code> Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customize-prestart-hook">Customize <code class="docutils literal notranslate"><span class="pre">prestart</span></code> Hook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#access-token">Access Token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="06_core_team.html">Core Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FastAPI Cookiecutter Template</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Developer Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/04_development.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="developer-guide">
+<span id="development-guide"></span><h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this heading"></a></h1>
+<section id="project-structure">
+<h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this heading"></a></h2>
+<p>Files related to application are in the <code class="docutils literal notranslate"><span class="pre">src</span></code> or <code class="docutils literal notranslate"><span class="pre">tests</span></code> directories.
+Application components are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{{cookiecutter.project_slug}}
+├── docs                            - sphinx documentastion
+├── scripts                         - scripts
+│   └── prestart.sh
+├── {{cookiecutter.project_slug}}
+│   ├── app
+│   │   ├── api                     - api endpoints
+│   │   │   └── base.py             - basic endpoints
+│   │   ├── application.py          - function for FastAPI application creation and configuration
+│   │   ├── configs                 - application configuration
+│   │   │   └── base.py             - basic configuration class
+│   │   ├── constants.py            - constants used inside the application
+│   │   ├── db                      - database related stuff
+│   │   │   ├── base.py             - base sqlalchemy DB model class
+│   │   │   ├── models              - folder for defining sqlalchemy DB model classes
+│   │   │   ├── queries             - folder for predefined sqlalchemy queries
+│   │   │   └── session.py          - a local session instance used inside application
+│   │   ├── events                  - events for startup, shutdown
+│   │   │   └── base.py             - dummy startup event and shudown event
+│   │   ├── globals.py              - global variables
+│   │   ├── middlewares             - middleware stuff
+│   │   │   └── logging.py          - middleware function related to logging
+│   │   ├── schemas                 - pydantic models for this application
+│   │   │   └── base.py             - pydantic models for the basic endpoints
+│   │   ├── services                - logic that is not included in the other folders
+│   │   ├── utils                   - utility stuff
+│   │   │   ├── errors.py           - customized exception classes
+│   │   │   ├── logging.py          - logging related utility functions, classes
+│   │   │   └── security.py         - security related functions, classes
+│   │   └── version.py              - version information
+│   ├── data                        - data used for this application
+│   └── main.py                     - main function to run the application
+├── tests                           - unit tests
+│   ├── conftest.py                 - fixtures in tests
+│   ├── resources                   - resources used in tests
+│   └── ...
+├── Dockerfile                      - docker file for building docker image
+├── Makefile                        - predefined commands
+├── README.md                       - package information
+├── requirements                - package dependencies
+│   ├── base.txt                - documentation dependecies
+│   ├── doc.txt                 - documentation dependecies
+│   ├── dev.txt                 - tests dependencies
+├── setup.cfg                       - configurations for mypy, bandit, pytest etc. Centralizing all the configurations to one place.
+└── setup.py                        - package installation configuration
+</pre></div>
+</div>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading"></a></h2>
+<section id="gunicorn-configuration">
+<h3><code class="docutils literal notranslate"><span class="pre">Gunicorn</span></code> Configuration<a class="headerlink" href="#gunicorn-configuration" title="Permalink to this heading"></a></h3>
+<p>A default <code class="docutils literal notranslate"><span class="pre">gunicorn-conf.py</span></code> file is included in the docker image and will be
+executed before your service is up. It supports configuration through environment
+variables. Please check the section <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker#environment-variables">Environment variables</a>
+from <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker">uvicorn-gunicorn-docker</a> project
+for more detailed information. The suggested approach for defining environment variables
+is to use the <code class="docutils literal notranslate"><span class="pre">scrtips/prestart.sh</span></code> file.</p>
+<p>In case you need to customize the <code class="docutils literal notranslate"><span class="pre">Gunicorn</span></code> configuration file, please check the
+default <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker/blob/master/docker-images/gunicorn_conf.py">gunicorn-conf.py</a> file
+and read the section <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker#custom-gunicorn-configuration-file">Custom Gunicorn configuration file</a>
+from <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker">uvicorn-gunicorn-docker</a> project firstly.</p>
+</section>
+<section id="customize-prestart-hook">
+<h3>Customize <code class="docutils literal notranslate"><span class="pre">prestart</span></code> Hook<a class="headerlink" href="#customize-prestart-hook" title="Permalink to this heading"></a></h3>
+<p>If you need to run anything before starting the app, you can add a file <code class="docutils literal notranslate"><span class="pre">prestart.sh</span></code> to the directory <code class="docutils literal notranslate"><span class="pre">scripts</span></code>.
+Please check the section <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker#custom-appprestartsh">Custom /app/prestart.sh</a>
+from <a class="reference external" href="https://github.com/tiangolo/uvicorn-gunicorn-docker">uvicorn-gunicorn-docker</a> project for more details.</p>
+</section>
+<section id="access-token">
+<h3>Access Token<a class="headerlink" href="#access-token" title="Permalink to this heading"></a></h3>
+<p>An access token creation function is provided. However, it’s not used by fault.
+To use it, please check the <a class="reference external" href="thehttps://github.com/tiangolo/full-stack-fastapi-postgresql/blob/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app/api/api_v1/endpoints/login.py">example</a>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="03_usage.html" class="btn btn-neutral float-left" title="User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="06_core_team.html" class="btn btn-neutral float-right" title="Core Team" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Zhiwei Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

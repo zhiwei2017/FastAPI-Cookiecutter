@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Guide &mdash; FastAPI Cookiecutter Template 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer Guide" href="04_development.html" />
+    <link rel="prev" title="Project Generation Options" href="02_prompts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FastAPI Cookiecutter Template
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_about.html">FastAPI Cookiecutter Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_prompts.html">Project Generation Options</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#literature">Literature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="04_development.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_core_team.html">Core Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FastAPI Cookiecutter Template</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/03_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="user-guide">
+<span id="usage-guide"></span><h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading"></a></h1>
+<section id="tutorial">
+<h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h2>
+<p>Let’s pretend you want to create a FastAPI project called “redditclone”.
+By using this template based on <a class="reference external" href="https://github.com/cookiecutter/cookiecutter">cookiecutter</a>,
+you will be able to quickly setup a runnable FastAPI project.</p>
+<p>First, get Cookiecutter. Trust me, it’s awesome:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install &quot;cookiecutter&gt;=1.7.0&quot;
+</pre></div>
+</div>
+<p>Now run it against this repo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cookiecutter https://github.com/zhiwei2017/FastAPI-Cookiecutter.git
+</pre></div>
+</div>
+<p>You’ll be prompted for some values. Provide them, then a FastAPI project will be created for you.</p>
+<p><strong>Warning</strong>: After this point, change ‘My Awesome Project’, ‘John Doe’, etc to your own information.</p>
+<p>Answer the prompts with your own desired <a class="reference internal" href="02_prompts.html#project-generation-options"><span class="std std-ref">Project Generation Options</span></a>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;fastapi-cookiecutter&#39;...
+remote: Enumerating objects: 219, done.
+remote: Counting objects: 100% (219/219), done.
+remote: Compressing objects: 100% (123/123), done.
+remote: Total 219 (delta 83), reused 181 (delta 69), pack-reused 0
+Receiving objects: 100% (219/219), 41.09 KiB | 1.71 MiB/s, done.
+Resolving deltas: 100% (83/83), done.
+project_name [My Awesome Project]: Reddit Clone
+project_slug [reddit_clone]: reddit_clone
+project_url [https://github.com/example_project]: https://github.com/redditclone
+author [John Doe]: John Doe
+email [john-doe@example.com]: john.doe@example.com
+short_description [Behold My Awesome Project!]: A reddit clone.
+version [0.0.1]: 0.1.0
+Select use_oauth:
+1 - No
+2 - Yes
+Choose from 1, 2 [1]: 1
+Select use_database:
+1 - Yes
+2 - No
+Choose from 1, 2 [1]: 1
+Select ci_tool:
+1. GitHub
+2. GitLab
+3. Bitbucket
+4. None
+Choose from 1, 2 [1]: 1
+Select python_version:
+1. 3.10
+2. 3.11
+3. 3.9
+4. 3.8
+5. 3.7
+Choose from 1, 2 [1]: 1
+</pre></div>
+</div>
+<p>Enter the project and take a look around:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd reddit_clone/
+$ ls
+</pre></div>
+</div>
+<p>Now take a look at your repo. Don’t forget to carefully look at the generated <strong>README</strong>.</p>
+</section>
+<section id="literature">
+<h2>Literature<a class="headerlink" href="#literature" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/cookiecutter/cookiecutter">cookiecutter</a></p></li>
+<li><p><a class="reference external" href="https://fastapi.tiangolo.com">FastAPI</a></p></li>
+<li><p><a class="reference external" href="https://pydantic-docs.helpmanual.io">Pydantic</a></p></li>
+<li><p><a class="reference external" href="https://www.sqlalchemy.org">SQLAlchemy</a></p></li>
+<li><p><a class="reference external" href="https://alembic.sqlalchemy.org/en/latest/">Alembic</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jpadilla/pyjwt">PyJWT</a></p></li>
+<li><p><a class="reference external" href="https://github.com/mpdavis/python-jose">python-jose</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="02_prompts.html" class="btn btn-neutral float-left" title="Project Generation Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="04_development.html" class="btn btn-neutral float-right" title="Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Zhiwei Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
