@@ -218,11 +218,6 @@ Contributing Guide
 
 Please check the `Contributing Guide <docs/source/07_contributing.rst>`_ for details.
 
-Acknowledgements
-----------------
-
-Special thanks to
-
 Core Team
 ---------
 
