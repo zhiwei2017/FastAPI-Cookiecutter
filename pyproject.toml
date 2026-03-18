@@ -7,7 +7,7 @@ readme = "README.rst"
 license = "MIT"
 repository = "https://github.com/zhiwei2017/fastapi-cookiecutter"
 documentation = "https://zhiwei2017.github.io/fastapi-cookiecutter/"
-keywords = ['cookiecutter template', 'python37', 'python38', 'python39', 'python310', 'python311', 'github-actions', 'gitlab-ci', 'bitbucket-pipelines', "fastapi", "RESTful API"]
+keywords = ['cookiecutter template', 'python312', 'python313', 'github-actions', 'gitlab-ci', 'bitbucket-pipelines', "fastapi", "RESTful API"]
 packages = [
   {include = "fastapi_cookiecutter"}
 ]
@@ -19,14 +19,14 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-cookiecutter = "~2.1"
+python = "^3.12"
+cookiecutter = "~2.7"
 
-[tool.poetry.dev-dependencies]
-bandit = "~1.7"
-flake8 = "~5.0"
-mypy = "~1.2"
-pytest = "~7.3"
+[tool.poetry.group.dev.dependencies]
+bandit = "~1.9"
+flake8 = "~7.3"
+mypy = "~1.19"
+pytest = "~9.0"
 pytest-cookies = "~0.7"
 pytest-instafail = "~0.5"
 pyyaml = "~6.0"

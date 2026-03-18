@@ -30,10 +30,22 @@
         "None"
     ],
     "python_version": [
-        "3.10",
-        "3.11",
-        "3.9",
-        "3.8",
-        "3.7"
-    ]
+        "3.12",
+        "3.13"
+    ],
+    "__prompts__": {
+        "project_name": "Select your project name",
+        "project_slug": "Select your project slug",
+        "project_url": "Project URL for hosting the source code.",
+        "author": "Author full name.",
+        "email": "Author email address.",
+        "short_description": "Short description.",
+        "version": "Semantic version to use for release.",
+        "license": "Semantic version to use for release.",
+        "use_oauth": "Do you plan to use OAuth2 for authentication?",
+        "use_database": "Do you plan to use a database (Postgres)?",
+        "docker_registry": "Your Docker registry name?",
+        "ci_tool": "Which CI/CD pipelines do you plan to use?",
+        "python_version": "Which CI/CD pipelines do you plan to use?"
+    }
 }
